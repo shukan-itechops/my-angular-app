@@ -6,8 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:my-angular-app": "node dist/my-angular-app/server/server.mjs"
+    "build:ssr": "ng build && ng run my-angular-app:server",
+    "serve:ssr": "node dist/my-angular-app/server/server.mjs"
   },
   "private": true,
   "dependencies": {
