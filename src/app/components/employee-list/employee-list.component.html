@@ -1,0 +1,60 @@
+@if(employeeList && employeeList.length > 0) {
+
+  <div class="mat-elevation-z8 w-full px-4">
+    <div class="flex justify-center w-full pt-6">
+      <h3 class="text-2xl font-semibold text-center">Employee List</h3>
+    </div>
+
+    <div class="flex justify-end p-4">
+      <button [routerLink]="['/create-employee']" mat-raised-button color="primary">Add Employee</button>
+    </div>
+
+    <!-- Responsive wrapper -->
+    <div class="overflow-x-auto">
+      <table mat-table [dataSource]="employeeList" class="min-w-full">
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef class="whitespace-nowrap"> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef class="whitespace-nowrap"> Email </th>
+          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <!-- Phone Column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef class="whitespace-nowrap"> Phone </th>
+          <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+        </ng-container>
+
+        <!-- Age Column -->
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef class="whitespace-nowrap"> Age </th>
+          <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+        </ng-container>
+
+        <!-- Salary Column -->
+        <ng-container matColumnDef="salary">
+          <th mat-header-cell *matHeaderCellDef class="whitespace-nowrap"> Salary </th>
+          <td mat-cell *matCellDef="let element"> {{element.salary}} </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="whitespace-nowrap"> Action </th>
+          <td mat-cell *matCellDef="let element">
+            <button class="mr-2 mb-1" mat-raised-button color="primary" (click)="edit(element.id)">Edit</button>
+            <button class="mb-1" mat-raised-button color="warn" (click)="delete(element.id)">Delete</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+}
