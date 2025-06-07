@@ -22,8 +22,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build SSR for production
-        run: npm run build:ssr --configuration=production
+      - name: Build for production
+        run: npm run build --configuration=production
 
       - name: Update package.json start script for Azure
         run: |
