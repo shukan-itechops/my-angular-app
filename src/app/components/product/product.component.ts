@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HttpService } from '../../http.service';
+import { HttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-product',

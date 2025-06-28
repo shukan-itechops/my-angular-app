@@ -1,0 +1,29 @@
+<div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-xl font-bold mb-4 text-center">Setting</h2>
+
+  <form [formGroup]="settingForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div>
+      <label class="block font-medium mb-1">Room Rent</label>
+      <input type="number" formControlName="roomRent" class="w-full border px-3 py-2 rounded" />
+    </div>
+
+    <div>
+      <label class="block font-medium mb-1">Cook Salary</label>
+      <input type="number" formControlName="cookSalary" class="w-full border px-3 py-2 rounded" />
+    </div>
+
+    <div>
+      <label class="block font-medium mb-1">Worker Salary</label>
+      <input type="number" formControlName="workerSalary" class="w-full border px-3 py-2 rounded" />
+    </div>
+
+    <div>
+      <label class="block font-medium mb-1">Light Bill</label>
+      <input type="number" formControlName="lightBill" class="w-full border px-3 py-2 rounded" />
+    </div>
+
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      Save Setting
+    </button>
+  </form>
+</div>

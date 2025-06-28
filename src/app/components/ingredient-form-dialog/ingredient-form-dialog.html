@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Edit Ingredient' : 'Add Ingredient' }}</h2>
+
+<mat-tab-group *ngIf="!isEdit" (selectedIndexChange)="onTabChange($event)">
+  <mat-tab label="Other Ingredient"></mat-tab>
+  <mat-tab label="Butter Milk"></mat-tab>
+</mat-tab-group>
+
+<mat-dialog-content [formGroup]="ingredientForm" class="pt-4">
+  <mat-form-field class="w-full">
+    <mat-label>Ingredient</mat-label>
+    <input matInput formControlName="ingredient" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Amount</mat-label>
+    <input type="number" matInput formControlName="amount" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="!ingredientForm.valid" (click)="save()">
+    {{ isEdit ? 'Update' : 'Save' }}
+  </button>
+</mat-dialog-actions>

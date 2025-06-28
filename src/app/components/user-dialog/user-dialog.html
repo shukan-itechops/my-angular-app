@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Edit User</h2>
+
+<mat-dialog-content [formGroup]="userForm" class="space-y-4">
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>User Name</mat-label>
+    <input matInput formControlName="userName" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" />
+  </mat-form-field>
+
+  <mat-slide-toggle formControlName="isActive">
+    Active User
+  </mat-slide-toggle>
+
+  <mat-slide-toggle formControlName="IsButterMilkEnable">
+    Butter Milk Enabled
+  </mat-slide-toggle>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="userForm.invalid">Save</button>
+</mat-dialog-actions>

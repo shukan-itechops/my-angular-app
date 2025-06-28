@@ -1,0 +1,30 @@
+<!-- Mobile Toggle Button -->
+<div class="md:hidden flex justify-between items-center p-4 bg-gray-800 text-white">
+  <span class="text-lg font-semibold">Dashboard</span>
+  <button (click)="toggleSidebar()" class="focus:outline-none">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+         viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+</div>
+
+<!-- Sidebar Container -->
+<div [ngClass]="{ 'block': isOpen, 'hidden': !isOpen }"
+     class="md:block bg-gray-800 text-white w-full md:w-64 p-4 min-h-screen">
+
+  <nav class="flex flex-col gap-3">
+    <a [routerLinkActiveOptions]="{ exact: true }" 
+        routerLink="/ingredient-list" routerLinkActive="bg-blue-700 text-white"
+       class="p-2 rounded hover:bg-gray-700">👥 Ingredient list</a>
+    <a [routerLinkActiveOptions]="{ exact: true }" 
+       routerLink="/user-list" routerLinkActive="bg-blue-700 text-white"
+       class="p-2 rounded hover:bg-gray-700">👤 User List</a>
+    <a [routerLinkActiveOptions]="{ exact: true }" 
+       routerLink="/settings" routerLinkActive="bg-blue-700 text-white"
+       class="p-2 rounded hover:bg-gray-700">⚙️ Settings</a>
+    <a [routerLinkActiveOptions]="{ exact: true }" 
+       routerLink="/report" routerLinkActive="bg-blue-700 text-white"
+       class="p-2 rounded hover:bg-gray-700">📊 Reports</a>
+  </nav>
+</div>

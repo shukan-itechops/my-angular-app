@@ -1,0 +1,114 @@
+<div class="max-w-6xl mx-auto mt-10 px-4">
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Report</h2>
+
+
+    <!-- Totals summary -->
+    <div class="mb-4 bg-indigo-50 p-4 rounded-md shadow border border-indigo-200">
+        <h3 class="text-lg font-semibold text-indigo-700 mb-2">Total Summary</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+            <div>
+                <span class="font-medium">Other Total Paid Amount:</span>
+                <span class="ml-2">{{ totalOther | currency }}</span>
+            </div>
+            <div>
+                <span class="font-medium">ButterMilk Total Paid Amount:</span>
+                <span class="ml-2">{{ totalButterMilk | currency }}</span>
+            </div>
+            <div>
+                <span class="font-medium">Room Rent:</span>
+                <span class="ml-2">{{ roomRent | currency }}</span>
+            </div>
+            <div>
+                <span class="font-medium">Cook Salary:</span>
+                <span class="ml-2">{{ cookSalary | currency }}</span>
+            </div>
+            <div>
+                <span class="font-medium">Worker Salary:</span>
+                <span class="ml-2">{{ workerSalary | currency }}</span>
+            </div>
+            <div>
+                <span class="font-medium">Light Bill:</span>
+                <span class="ml-2">{{ lightBill | currency }}</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div *ngIf="loading" class="text-center text-gray-500">Loading Report...</div>
+    <div *ngIf="error" class="text-center text-red-500">{{ error }}</div>
+
+    <!-- 📱 Mobile layout -->
+    <div class="space-y-4 md:hidden">
+        <div *ngFor="let report of reports; let i = index" class="border rounded-lg shadow-sm p-4 space-y-2">
+
+            <!-- Row: Index -->
+            <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
+                <span class="text-sm w-[30%] text-gray-500 font-medium">No.</span>
+                <span class="text-sm w-[70%] text-gray-800 text-right">{{ i + 1 }}</span>
+            </div>
+
+            <!-- Row: Username -->
+            <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
+                <span class="text-sm w-[30%] text-gray-500 font-medium">Username</span>
+                <span class="text-sm w-[70%] text-gray-800 text-right">{{ report.userName }}</span>
+            </div>
+
+            <!-- Row: Email -->
+            <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
+                <span class="text-sm w-[30%] text-gray-500 font-medium">Other Total Paid Amount</span>
+                <span class="text-sm w-[70%] text-gray-800 text-right break-all">{{ report.totalOtherPaidAmount |
+                    currency }}</span>
+            </div>
+
+            <!-- Row: ButterMilk Enable -->
+            <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
+                <span class="text-sm w-[30%] text-gray-500 font-medium">ButterMilk Total Paid Amount</span>
+                <span class="text-sm w-[70%] text-gray-800 text-right">{{ report.totalButterMilkPaidAmount | currency
+                    }}</span>
+            </div>
+
+            <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
+                <span class="text-sm w-[30%] text-gray-500 font-medium">Total Payable Amount</span>
+                <span class="text-sm w-[70%] text-gray-800 text-right">{{ getFinalPayableAmount(report) | currency
+                    }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🖥️ Desktop table -->
+    <div class="hidden md:block overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 shadow rounded-lg border border-indigo-300 border-dotted">
+            <thead class="bg-indigo-100 text-indigo-700 text-sm font-semibold">
+                <tr>
+                    <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">#</th>
+                    <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Username</th>
+                    <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Other Total Paid Amount
+                    </th>
+                    <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">ButterMilk Total Paid
+                        Amount</th>
+                    <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Total Payable Amount</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-indigo-300 text-sm text-gray-700">
+                <tr *ngFor="let report of reports; let i = index" class="hover:bg-indigo-50 transition">
+                    <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ i + 1 }}</td>
+                    <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ report.userName }}</td>
+                    <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ report.totalOtherPaidAmount |
+                        currency }}</td>
+                    <td class="px-4 py-2 border-b border-indigo-200 border-dotted">
+                        {{ report.totalButterMilkPaidAmount | currency }}
+                    </td>
+
+                    <td class="px-4 py-2 border-b border-indigo-200 border-dotted">
+                        {{ getFinalPayableAmount(report) | currency }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p *ngIf="!reports?.length && !loading" class="text-center text-gray-500 py-4">No record found.</p>
+</div>
