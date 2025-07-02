@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ReportResponse } from '../interface/interface';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -14,7 +15,8 @@ export class ReportService {
   http = inject(HttpClient);
   constructor() { }
 
-  getReport(){
-    return this.http.get<ReportResponse[]>(this.apiUrl+"/Report/user-payment");
+  getReport(year: number, month: number): Observable<ReportResponse[]> {
+    return this.http.get<ReportResponse[]>(`${this.apiUrl}/Report/user-payment?year=${year}&month=${month}`);
   }
+
 }

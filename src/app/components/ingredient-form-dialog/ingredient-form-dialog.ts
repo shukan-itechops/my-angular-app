@@ -9,11 +9,13 @@ import { Ingredient } from '../../interface/interface';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-ingredient-form-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule, MatSnackBarModule, MatDialogModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule, MatSnackBarModule, MatDialogModule,MatDatepickerModule,MatNativeDateModule],
   templateUrl: './ingredient-form-dialog.html',
   styleUrl: './ingredient-form-dialog.scss'
 })
@@ -29,7 +31,8 @@ export class IngredientFormDialog {
   ingredientForm = this.formBuilder.group({
     ingredient: ['', Validators.required],
     amount: ['', [Validators.required, Validators.min(1)]],
-    userId: ['']
+    userId: [''],
+    date: [new Date(), Validators.required]
   });
 
   isEdit = false;
@@ -42,7 +45,8 @@ export class IngredientFormDialog {
       this.ingredientForm.patchValue({
         ingredient: data.ingredient.ingredientName,
         amount: data.ingredient.amount,
-        userId: data.ingredient.userId
+        userId: data.ingredient.userId,
+        date: new Date(data.ingredient.createdAt)
       });
 
       if (data.ingredient.ingredientName === 'Butter Milk') {
@@ -65,7 +69,8 @@ export class IngredientFormDialog {
     const ingredient: Ingredient = {
       ingredientName: rawValue.ingredient ?? "",
       amount: parseFloat(rawValue.amount ?? ""),
-      userId: rawValue.userId ?? ""
+      userId: rawValue.userId ?? "",
+      createdAt: rawValue.date ? new Date(rawValue.date) : undefined 
     };
 
     const saveAction = this.isEdit

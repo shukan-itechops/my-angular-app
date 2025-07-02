@@ -1,9 +1,17 @@
+<!-- Fixed navbar on top -->
 <app-navbar *ngIf="!isAuthPage"></app-navbar>
 
-<div class="flex flex-col md:flex-row min-h-screen">
-  <app-sidebar *ngIf="!isAuthPage" class="md:sticky md:top-0 z-10"></app-sidebar>
+<!-- Main layout starts below navbar -->
+<div class="flex flex-col md:flex-row mt-[68px] min-h-screen">
+  
+  <!-- Fixed Sidebar (only on desktop) -->
+  <app-sidebar *ngIf="!isAuthPage"
+               class="hidden md:block fixed top-[68px] left-0 w-1/4 max-w-xs h-[calc(100vh-68px)] bg-gray-800 text-white z-10">
+  </app-sidebar>
 
-  <main class="flex-1 p-4 bg-gray-100">
+  <!-- Main Content -->
+  <main class="flex-1 md:ml-[25%] p-4 bg-gray-100 min-h-[calc(100vh-68px)]">
     <router-outlet></router-outlet>
   </main>
 </div>
+

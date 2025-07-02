@@ -60,6 +60,12 @@ export class EmployeeListComponent {
     selectedYear: ''
   };
 
+  currentPage = 1;
+  pageSize = 3;
+  totalItems = 0;
+  totalPages: number = 0;
+  pageRange: number[] = [];
+
   uniqueUserNames: string[] = [];
   years: string[] = [];
 
@@ -91,38 +97,31 @@ export class EmployeeListComponent {
 
   ngOnInit(): void {
     this.initYearOptions();
+    const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+    this.filters.selectedMonth = currentMonth; // 👈 set current month
     this.loadIngredients();
   }
 
   loadIngredients() {
-    this.httpService.getAllIngredient().subscribe((result) => {
-      this.ingredientList = result;
-      this.filteredList = result;
+    this.httpService.getAllIngredient(this.currentPage, this.pageSize, this.filters).subscribe((response) => {
+      this.ingredientList = response.items;
+      this.totalItems = response.totalCount;
 
-      const namesSet = new Set(result.map(x => x.userName).filter((name): name is string => !!name));
+      this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+      this.generatePageRange();
+
+      const namesSet = new Set<string>(
+        response.items.map((x: Ingredient) => x.userName).filter((name): name is string => !!name)
+      );
       this.uniqueUserNames = Array.from(namesSet);
-
-      const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
-      this.filters.selectedMonth = currentMonth;
-      this.applyFilters();
     });
   }
 
+
+
   applyFilters() {
-    const { userName, selectedMonth, selectedYear } = this.filters;
-
-    this.filteredList = this.ingredientList.filter(item => {
-      const matchesUser = !userName || item.userName === userName;
-
-      const createdDate = item.createdAt ? new Date(item.createdAt) : null;
-      const itemMonthStr = createdDate ? (createdDate.getMonth() + 1).toString().padStart(2, '0') : '';
-      const itemYearStr = createdDate ? createdDate.getFullYear().toString() : '';
-
-      const matchesMonth = !selectedMonth || itemMonthStr === selectedMonth;
-      const matchesYear = !selectedYear || itemYearStr === selectedYear;
-
-      return matchesUser && matchesMonth && matchesYear;
-    });
+    this.currentPage = 1;           // Reset to first page on filter change
+    this.loadIngredients();         // Fetch new data from server
   }
 
 
@@ -167,6 +166,48 @@ export class EmployeeListComponent {
     }
 
     this.filters.selectedYear = currentYear.toString(); // default selected
+  }
+
+  generatePageRange() {
+    const maxVisible = 3;
+
+    let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    // Adjust start if end goes beyond totalPages
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    this.pageRange = [];
+    for (let i = start; i <= end; i++) {
+      this.pageRange.push(i);
+    }
+  }
+
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadIngredients();
+    }
+  }
+
+  nextPage() {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  prevPage() {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  firstPage() {
+    this.goToPage(1);
+  }
+
+  lastPage() {
+    this.goToPage(this.totalPages);
   }
 
 }

@@ -3,18 +3,24 @@ import { ReportResponse, Setting } from '../../interface/interface';
 import { ReportService } from '../../services/report.service';
 import { CommonModule } from '@angular/common';
 import { SettingService } from '../../services/setting.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-report',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule,FormsModule],
   templateUrl: './report.html',
-  styleUrl: './report.scss'
+  styleUrl: './report.scss',
 })
 export class Report {
 
   reports: ReportResponse[] = [];
   loading = true;
   error: string | null = null;
+
+  // Filters
+  selectedMonth: number = new Date().getMonth() + 1;
+  selectedYear: number = new Date().getFullYear();
 
   totalButterMilk: number = 0;
   totalOther: number = 0;
@@ -27,7 +33,12 @@ export class Report {
   constructor(private reportService: ReportService, private settingService: SettingService) { }
 
   ngOnInit(): void {
-    this.reportService.getReport().subscribe({
+    this.fetchReport();
+  }
+
+  fetchReport(): void {
+    this.loading = true;
+    this.reportService.getReport(this.selectedYear, this.selectedMonth).subscribe({
       next: (data) => {
         this.reports = data;
         this.calculateTotals();
@@ -39,6 +50,24 @@ export class Report {
         this.loading = false;
       }
     });
+  }
+
+  onFilterChange(): void {
+    this.fetchReport();
+  }
+
+  getMonths() {
+    return [
+      { value: 1, name: 'January' }, { value: 2, name: 'February' }, { value: 3, name: 'March' },
+      { value: 4, name: 'April' }, { value: 5, name: 'May' }, { value: 6, name: 'June' },
+      { value: 7, name: 'July' }, { value: 8, name: 'August' }, { value: 9, name: 'September' },
+      { value: 10, name: 'October' }, { value: 11, name: 'November' }, { value: 12, name: 'December' },
+    ];
+  }
+
+  getYears(): number[] {
+    const currentYear = new Date().getFullYear();
+    return Array.from({ length: 5 }, (_, i) => currentYear - i);
   }
 
   lodSetting() {

@@ -1,5 +1,5 @@
 <!-- Mobile Toggle Button -->
-<div class="md:hidden flex justify-between items-center p-4 bg-gray-800 text-white">
+<div class="hidden md:block flex justify-between items-center p-4 bg-gray-800 text-white">
   <span class="text-lg font-semibold">Dashboard</span>
   <button (click)="toggleSidebar()" class="focus:outline-none">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
@@ -10,8 +10,7 @@
 </div>
 
 <!-- Sidebar Container -->
-<div [ngClass]="{ 'block': isOpen, 'hidden': !isOpen }"
-     class="md:block bg-gray-800 text-white w-full md:w-64 p-4 min-h-screen">
+<div class="hidden md:block bg-gray-800 text-white w-full md:w-64 p-4 min-h-screen">
 
   <nav class="flex flex-col gap-3">
     <a [routerLinkActiveOptions]="{ exact: true }" 

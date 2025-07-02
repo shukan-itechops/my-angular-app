@@ -5,15 +5,24 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })
 export class Navbar {
-  constructor(private auth: AuthService) {}
-
+  isOpen = false;
+  constructor(private auth: AuthService) { }
   logout() {
     this.auth.logout();
+  }
+  toggleSidebar() {
+    this.isOpen = !this.isOpen;
+  }
+
+  closeSidebarOnMobile() {
+    if (window.innerWidth < 768) {
+      this.isOpen = false;
+    }
   }
 
 }
