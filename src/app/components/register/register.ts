@@ -15,7 +15,7 @@ export class Register {
   errorMessage = '';
   successMessage = '';
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -29,12 +29,15 @@ export class Register {
     this.auth.register(this.registerForm.value).subscribe({
       next: () => {
         this.successMessage = 'Registration successful! Redirecting to login...';
+        this.errorMessage = '';
         setTimeout(() => this.router.navigate(['/login']), 2000);
       },
-      error: () => {
-        this.errorMessage = 'Registration failed. Try again.';
+      error: (err) => {
+        this.successMessage = '';
+        this.errorMessage = err.error || 'Registration failed. Try again.';
       }
     });
   }
+
 
 }

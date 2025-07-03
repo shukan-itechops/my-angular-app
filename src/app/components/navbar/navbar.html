@@ -1,10 +1,11 @@
-<nav class="fixed top-0 left-0 w-full z-50 bg-gray-800 text-white px-6 py-4 flex justify-between items-center shadow-md">
+<nav
+  class="fixed top-0 left-0 w-full z-50 bg-gray-800 text-white px-6 py-4 flex justify-between items-center shadow-md">
   <div class="text-xl font-semibold">
     <a routerLink="/" class="hover:text-blue-400">RoomieSplit</a>
   </div>
   <div class="flex items-center gap-4">
     <a routerLink="/profile" class="hover:text-blue-400">Profile</a>
-    <button (click)="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition">
+    <button (click)="logout()" class="bg-red-500 hidden md:block hover:bg-red-600 text-white px-4 py-2 rounded-md transition">
       Logout
     </button>
     <button (click)="toggleSidebar()" class="focus:outline-none">
@@ -18,24 +19,19 @@
 
 <!-- Sidebar Container -->
 <div [ngClass]="{ 'block': isOpen, 'hidden': !isOpen }"
-     class="fixed md:relative top-[68px] left-0 z-40 md:z-auto bg-gray-800 text-white w-full md:w-64 h-1/2 md:h-auto overflow-y-auto p-4 transition-all duration-300">
+  class="fixed md:relative top-[68px] left-0 z-40 md:z-auto bg-gray-800 text-white w-full md:w-64 h-1/2 md:h-auto overflow-y-auto p-4 transition-all duration-300">
 
   <nav class="flex flex-col gap-3">
-    <a [routerLinkActiveOptions]="{ exact: true }" 
-        routerLink="/ingredient-list" routerLinkActive="bg-blue-700 text-white"
-        (click)="closeSidebarOnMobile()"
-       class="p-2 rounded hover:bg-gray-700">👥 Ingredient list</a>
-    <a [routerLinkActiveOptions]="{ exact: true }" 
-       routerLink="/user-list" routerLinkActive="bg-blue-700 text-white"
-       (click)="closeSidebarOnMobile()"
-       class="p-2 rounded hover:bg-gray-700">👤 User List</a>
-    <a [routerLinkActiveOptions]="{ exact: true }" 
-       routerLink="/settings" routerLinkActive="bg-blue-700 text-white"
-       (click)="closeSidebarOnMobile()"
-       class="p-2 rounded hover:bg-gray-700">⚙️ Settings</a>
-    <a [routerLinkActiveOptions]="{ exact: true }" 
-       routerLink="/report" routerLinkActive="bg-blue-700 text-white"
-       (click)="closeSidebarOnMobile()"
-       class="p-2 rounded hover:bg-gray-700">📊 Reports</a>
+    <a [routerLinkActiveOptions]="{ exact: true }" routerLink="/ingredient-list"
+      routerLinkActive="bg-blue-700 text-white" (click)="closeSidebarOnMobile()"
+      class="p-2 rounded hover:bg-gray-700">👥 Ingredient list</a>
+    <a [routerLinkActiveOptions]="{ exact: true }" routerLink="/user-list" routerLinkActive="bg-blue-700 text-white"
+      (click)="closeSidebarOnMobile()" class="p-2 rounded hover:bg-gray-700">👤 User List</a>
+    <a [routerLinkActiveOptions]="{ exact: true }" routerLink="/settings" routerLinkActive="bg-blue-700 text-white"
+      (click)="closeSidebarOnMobile()" class="p-2 rounded hover:bg-gray-700">⚙️ Settings</a>
+    <a [routerLinkActiveOptions]="{ exact: true }" routerLink="/report" routerLinkActive="bg-blue-700 text-white"
+      (click)="closeSidebarOnMobile()" class="p-2 rounded hover:bg-gray-700">📊 Reports</a>
+    <a [routerLinkActiveOptions]="{ exact: true }" (click)="logout()" routerLinkActive="bg-blue-700 text-white"
+        class="p-2 rounded hover:bg-gray-700">🔓 Logout</a>
   </nav>
 </div>

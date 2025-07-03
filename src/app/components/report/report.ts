@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-report',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './report.html',
   styleUrl: './report.scss',
 })
@@ -28,6 +28,8 @@ export class Report {
   cookSalary: number = 0;
   workerSalary: number = 0;
   lightBill: number = 0;
+  pdfGenerating = false;
+
 
 
   constructor(private reportService: ReportService, private settingService: SettingService) { }
@@ -131,5 +133,36 @@ export class Report {
   }
 
 
+  async downloadPDF(): Promise<void> {
+    if (typeof window === 'undefined') return;
 
+    this.pdfGenerating = true;
+
+    try {
+      const html2pdf = (await import('html2pdf.js')).default;
+      const element = document.getElementById('report-content');
+      if (!element) {
+        this.pdfGenerating = false;
+        return;
+      }
+
+      element.classList.add('pdf-mode');
+
+      await html2pdf()
+        .from(element)
+        .set({
+          margin: 0.5,
+          filename: `report-${this.selectedYear}-${this.selectedMonth}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        })
+        .save();
+    } catch (err) {
+      console.error('PDF generation failed', err);
+      alert('PDF generation failed. Please try again.');
+    } finally {
+      this.pdfGenerating = false;
+    }
+  }
 }

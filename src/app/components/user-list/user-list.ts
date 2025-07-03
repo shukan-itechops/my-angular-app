@@ -4,6 +4,7 @@ import { User } from '../../interface/interface';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialog } from '../user-dialog/user-dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-list',
@@ -51,12 +52,41 @@ export class UserList {
   }
 
   deleteUser(user: User) {
-    // confirm + delete logic
-    if (confirm(`Are you sure to delete ${user.username}?`)) {
-      console.log('Delete user', user);
-      // this.userService.deleteUser(user.id).subscribe(...)
-    }
+    Swal.fire({
+      title: `Delete ${user.username}?`,
+      text: "This action cannot be undone!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      didOpen: () => {
+        const confirmBtn = Swal.getConfirmButton();
+        const cancelBtn = Swal.getCancelButton();
+        if (confirmBtn) confirmBtn.style.backgroundColor = '#d33';
+        if (cancelBtn) cancelBtn.style.backgroundColor = '#3085d6';
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.deleteUser(user.id!).subscribe({
+          next: (res) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: `${res.username} has been deleted successfully.`,
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            this.loadUsers();
+          },
+          error: (err) => {
+            if (err.status === 404) {
+              Swal.fire('Not Found', 'User not found or already deleted.', 'error');
+            } else {
+              Swal.fire('Error', 'Failed to delete user. Please try again.', 'error');
+            }
+          }
+        });
+      }
+    });
   }
-
-
 }

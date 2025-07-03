@@ -41,6 +41,10 @@ export class AuthService {
     return this.http.put(`${this.API_URL}/auth/${id}`, data, { headers });
   }
 
+  deleteUser(id: string) {
+    return this.http.delete<{ username: string }>(`${this.API_URL}/auth/${id}`);
+  }
+
 
   getUserProfile(): Observable<User | null> {
     const userId = this.getUserId();
