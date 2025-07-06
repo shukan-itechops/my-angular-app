@@ -5,10 +5,11 @@ import { AuthService } from '../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialog } from '../user-dialog/user-dialog';
 import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-list',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './user-list.html',
   styleUrl: './user-list.scss'
 })
@@ -17,6 +18,8 @@ export class UserList {
   loading = true;
   error = '';
   dialog = inject(MatDialog);
+  currentUserId: string | null = null;
+  userRole: string | null = null;
 
   constructor(private authService: AuthService) { }
 
@@ -26,6 +29,8 @@ export class UserList {
 
   loadUsers(): void {
     this.loading = true;
+    this.currentUserId = this.authService.getUserId();
+    this.userRole = this.authService.getUserRole();
     this.authService.getAllUsers().subscribe({
       next: (data) => {
         this.users = data;
@@ -86,6 +91,30 @@ export class UserList {
             }
           }
         });
+      }
+    });
+  }
+
+  onRoleChange(user: User) {
+    if (!user.id) return;
+
+    const updatedUser: User = {
+      ...user,
+      password: undefined
+    };
+
+    this.authService.updateUser(user.id, updatedUser).subscribe({
+      next: () => {
+        Swal.fire({
+          title: 'Success',
+          text: `Role updated to ${user.role}`,
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      },
+      error: () => {
+        Swal.fire('Error', 'Failed to update role.', 'error');
       }
     });
   }

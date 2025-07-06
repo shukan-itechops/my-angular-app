@@ -36,6 +36,7 @@ export interface User {
   password?: string;
   isActive: boolean;
   isButterMilkEnable: boolean;
+  role?: string;
 }
 
 export interface Setting{

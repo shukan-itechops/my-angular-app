@@ -1,5 +1,7 @@
 <!-- Fixed navbar on top -->
-<app-navbar *ngIf="!isAuthPage"></app-navbar>
+
+<app-loader *ngIf="loading || !initialAuthResolved"></app-loader>
+<app-navbar *ngIf="!isAuthPage && initialAuthResolved"></app-navbar>
 
 <!-- Main layout starts below navbar -->
 <div 
@@ -9,7 +11,7 @@
   }"
 >
   <!-- Fixed Sidebar (only on desktop) -->
-  <app-sidebar *ngIf="!isAuthPage"
+  <app-sidebar *ngIf="!isAuthPage && initialAuthResolved"
                class="hidden md:block fixed top-[68px] left-0 w-1/4 max-w-xs h-[calc(100vh-68px)] bg-gray-800 text-white z-10">
   </app-sidebar>
 
@@ -20,6 +22,6 @@
       'w-full min-h-screen bg-gray-100': isAuthPage
     }"
   >
-    <router-outlet></router-outlet>
+    <router-outlet *ngIf="initialAuthResolved"></router-outlet>
   </main>
 </div>

@@ -15,6 +15,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -43,6 +44,7 @@ export class EmployeeListComponent {
   snackBar = inject(MatSnackBar);
   ingredientList: Ingredient[] = [];
   httpService = inject(HttpService);
+  authService = inject(AuthService);
   displayedColumns: string[] = [
     'name',
     'email',
@@ -68,6 +70,9 @@ export class EmployeeListComponent {
 
   uniqueUserNames: string[] = [];
   years: string[] = [];
+  currentUserId: string | null = null;
+  showActionColumn: boolean = false;
+  userRole: string | null = null;
 
   months = [
     { name: 'January', value: '01' },
@@ -96,6 +101,8 @@ export class EmployeeListComponent {
   }
 
   ngOnInit(): void {
+    this.currentUserId = this.authService.getUserId();
+    this.userRole = this.authService.getUserRole();
     this.initYearOptions();
     const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
     this.filters.selectedMonth = currentMonth; // 👈 set current month
@@ -106,6 +113,9 @@ export class EmployeeListComponent {
     this.httpService.getAllIngredient(this.currentPage, this.pageSize, this.filters).subscribe((response) => {
       this.ingredientList = response.items;
       this.totalItems = response.totalCount;
+      this.showActionColumn = this.ingredientList.some(
+        x => x.userId === this.currentUserId
+      );
 
       this.totalPages = Math.ceil(this.totalItems / this.pageSize);
       this.generatePageRange();

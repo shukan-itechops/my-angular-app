@@ -74,7 +74,7 @@
       </div>
 
       <!-- Row: Action -->
-      <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
+      <div *ngIf="currentUserId === element.userId || userRole === 'Admin'" class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
         <span class="text-sm w-[30%] text-gray-500 font-medium">Action</span>
         <span class="text-sm w-[70%] text-right flex gap-2 justify-end">
           <button *ngIf="element.id" (click)="edit(element.id)" class="text-blue-600 hover:text-blue-800"
@@ -119,7 +119,7 @@
           <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Ingredient</th>
           <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Amount</th>
           <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Date</th>
-          <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Action</th>
+          <th *ngIf="showActionColumn || userRole === 'Admin'" class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Action</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-indigo-300 text-sm text-gray-700">
@@ -129,7 +129,7 @@
           <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ element.ingredientName }}</td>
           <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ element.amount }}</td>
           <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ element.createdAt | date:'shortDate' }}</td>
-          <td class="px-4 py-2 border-b border-indigo-200 border-dotted">
+          <td *ngIf="currentUserId === element.userId || userRole === 'Admin'" class="px-4 py-2 border-b border-indigo-200 border-dotted">
             <div class="flex gap-3">
               <button *ngIf="element.id" (click)="edit(element.id)" class="text-blue-600 hover:text-blue-800"
                 aria-label="Edit">

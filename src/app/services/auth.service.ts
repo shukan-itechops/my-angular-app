@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from 'jwt-decode';
 import { User, UserLoginDto, UserRegisterDto } from '../interface/interface';
-import { Observable } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 
 interface JwtPayload {
   exp: number;
@@ -58,13 +58,26 @@ export class AuthService {
   }
 
   saveToken(token: string) {
-    this.cookieService.set('token', token, 1, '/', '', true, 'Strict'); // 1 day expiration, secure & strict
+    this.cookieService.set('token', token, 1, '/', '', true, 'Strict');
+
+    try {
+      const decoded = jwtDecode<any>(token);
+      const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      if (role) {
+        localStorage.setItem('userRole', role);
+      }
+    } catch (e) {
+      console.error('Failed to decode token', e);
+    }
   }
 
   getToken(): string | null {
     return this.cookieService.get('token') || null;
   }
 
+  getUserRole(): string | null {
+    return localStorage.getItem('userRole');
+  }
 
   isLoggedIn(): boolean {
     const token = this.getToken();
@@ -94,6 +107,12 @@ export class AuthService {
 
   logout() {
     this.cookieService.delete('token', '/');
+     localStorage.removeItem('userRole');
     this.router.navigate(['/login']);
+  }
+
+  checkLoginStatus(): Observable<boolean> {
+    const isValid = this.isLoggedIn();
+    return of(isValid).pipe(delay(500));
   }
 }
