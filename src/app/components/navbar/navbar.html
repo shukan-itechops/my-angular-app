@@ -4,8 +4,15 @@
     <a routerLink="/" class="hover:text-blue-400">RoomieSplit</a>
   </div>
   <div class="flex items-center gap-4">
+    <!-- 🌙 Dark Mode Toggle Button -->
+    <button (click)="toggleDarkMode()" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-md transition"
+      aria-label="Toggle Dark Mode">
+      {{ isDarkMode ? '☀️ Light' : '🌙 Dark' }}
+    </button>
+
     <a routerLink="/profile" class="hover:text-blue-400">Profile</a>
-    <button (click)="logout()" class="bg-red-500 hidden md:block hover:bg-red-600 text-white px-4 py-2 rounded-md transition">
+    <button (click)="logout()"
+      class="bg-red-500 hidden md:block hover:bg-red-600 text-white px-4 py-2 rounded-md transition">
       Logout
     </button>
     <button (click)="toggleSidebar()" class="focus:outline-none">
@@ -32,6 +39,6 @@
     <a [routerLinkActiveOptions]="{ exact: true }" routerLink="/report" routerLinkActive="bg-blue-700 text-white"
       (click)="closeSidebarOnMobile()" class="p-2 rounded hover:bg-gray-700">📊 Reports</a>
     <a [routerLinkActiveOptions]="{ exact: true }" (click)="logout()" routerLinkActive="bg-blue-700 text-white"
-        class="p-2 rounded hover:bg-gray-700">🔓 Logout</a>
+      class="p-2 rounded hover:bg-gray-700">🔓 Logout</a>
   </nav>
 </div>

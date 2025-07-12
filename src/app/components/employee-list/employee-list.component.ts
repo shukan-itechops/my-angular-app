@@ -16,6 +16,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthService } from '../../services/auth.service';
+import { CustomDropdown } from '../../custom-dropdown/custom-dropdown';
 
 @Component({
   selector: 'app-employee-list',
@@ -32,7 +33,8 @@ import { AuthService } from '../../services/auth.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    CustomDropdown
   ],
   templateUrl: './employee-list.component.html',
   styleUrl: './employee-list.component.scss'
@@ -219,5 +221,18 @@ export class EmployeeListComponent {
   lastPage() {
     this.goToPage(this.totalPages);
   }
+
+  get userNameOptions() {
+    return this.uniqueUserNames.map(u => ({ label: u, value: u }));
+  }
+
+  get monthOptions() {
+    return this.months.map(m => ({ label: m.name, value: m.value }));
+  }
+
+  get yearOptions() {
+    return this.years.map(y => ({ label: y, value: y }));
+  }
+
 
 }

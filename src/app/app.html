@@ -18,8 +18,8 @@
   <!-- Main Content -->
   <main 
     [ngClass]="{
-      'flex-1 md:ml-[25%] p-4 bg-gray-100 min-h-[calc(100vh-68px)]': !isAuthPage,
-      'w-full min-h-screen bg-gray-100': isAuthPage
+      'flex-1 md:ml-[25%] bg-gray-100 dark:bg-gray-950 text-black dark:text-white min-h-[calc(100vh-68px)]': !isAuthPage,
+      'w-full min-h-screen bg-gray-100 dark:bg-gray-950 text-black dark:text-white': isAuthPage
     }"
   >
     <router-outlet *ngIf="initialAuthResolved"></router-outlet>

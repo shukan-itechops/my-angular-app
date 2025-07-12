@@ -1,81 +1,71 @@
-<div class="mat-elevation-z8 w-full p-4">
+<div class="p-4 w-full bg-white text-black dark:bg-gray-900 dark:text-white">
   <div class="flex justify-center w-full pt-6">
-    <h3 class="text-2xl font-semibold text-center">Ingredient List</h3>
+    <h3 class="text-2xl font-semibold text-center text-gray-900 dark:text-white">Ingredient List</h3>
   </div>
 
   <div class="flex justify-end py-6 pr-4">
     <button mat-raised-button color="primary" (click)="openDialog()">Add Ingredient</button>
   </div>
 
-  <div class="px-4 flex flex-col gap-4 md:flex-row md:items-end">
-    <!-- UserName Filter -->
-    <mat-form-field class="w-full md:w-48" appearance="outline">
-      <mat-label>User Name</mat-label>
-      <mat-select [(ngModel)]="filters.userName" (selectionChange)="applyFilters()">
-        <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let name of uniqueUserNames" [value]="name">{{ name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="px-4 flex flex-col mb-5 gap-4 md:flex-row md:items-end">
+    <!-- User Name Dropdown -->
+    <app-custom-dropdown [label]="'Member'" [options]="userNameOptions" [(selectedValue)]="filters.userName"
+      (selectionChange)="applyFilters()"></app-custom-dropdown>
 
-    <!-- Month Filter -->
-    <mat-form-field class="w-full md:w-48" appearance="outline">
-      <mat-label>Month</mat-label>
-      <mat-select [(ngModel)]="filters.selectedMonth" (selectionChange)="applyFilters()">
-        <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let month of months" [value]="month.value">
-          {{ month.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <app-custom-dropdown [label]="'Month'" [options]="monthOptions" [(selectedValue)]="filters.selectedMonth"
+      (selectionChange)="applyFilters()"></app-custom-dropdown>
 
-    <!-- Year Filter -->
-    <mat-form-field class="w-full md:w-48" appearance="outline">
-      <mat-label>Year</mat-label>
-      <mat-select [(ngModel)]="filters.selectedYear" (selectionChange)="applyFilters()">
-        <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <app-custom-dropdown [label]="'Year'" [options]="yearOptions" [(selectedValue)]="filters.selectedYear"
+      (selectionChange)="applyFilters()"></app-custom-dropdown>
   </div>
+
 
   <!-- Responsive wrapper -->
   <!-- 📱 Mobile layout -->
   <div class="space-y-4 md:hidden">
-    <div *ngFor="let element of ingredientList; let i = index" class="border rounded-lg shadow-sm p-4 space-y-2">
+    <div *ngFor="let element of ingredientList; let i = index"
+      class="border rounded-lg shadow-sm p-4 space-y-2 bg-white dark:bg-gray-800 dark:border-gray-700">
 
       <!-- Row: Index -->
-      <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
-        <span class="text-sm w-[30%] text-gray-500 font-medium">No.</span>
-        <span class="text-sm w-[70%] text-gray-800 text-right">{{ i + 1 }}</span>
+      <div
+        class="flex border-2 border-indigo-300 dark:border-indigo-600 border-dotted p-2 rounded-md justify-between items-center">
+        <span class="text-sm w-[30%] text-gray-500 dark:text-gray-300 font-medium">No.</span>
+        <span class="text-sm w-[70%] text-gray-800 dark:text-white text-right">{{ i + 1 }}</span>
       </div>
 
       <!-- Row: Name -->
-      <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
-        <span class="text-sm w-[30%] text-gray-500 font-medium">Name</span>
-        <span class="text-sm w-[70%] text-gray-800 text-right">{{ element.userName }}</span>
+      <div
+        class="flex border-2 border-indigo-300 dark:border-indigo-600 border-dotted p-2 rounded-md justify-between items-center">
+        <span class="text-sm w-[30%] text-gray-500 dark:text-gray-300 font-medium">Name</span>
+        <span class="text-sm w-[70%] text-gray-800 dark:text-white text-right">{{ element.userName }}</span>
       </div>
 
       <!-- Row: Ingredient -->
-      <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
-        <span class="text-sm w-[30%] text-gray-500 font-medium">Ingredient</span>
-        <span class="text-sm w-[70%] text-gray-800 text-right">{{ element.ingredientName }}</span>
+      <div
+        class="flex border-2 border-indigo-300 dark:border-indigo-600 border-dotted p-2 rounded-md justify-between items-center">
+        <span class="text-sm w-[30%] text-gray-500 dark:text-gray-300 font-medium">Ingredient</span>
+        <span class="text-sm w-[70%] text-gray-800 dark:text-white text-right">{{ element.ingredientName }}</span>
       </div>
 
       <!-- Row: Amount -->
-      <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
-        <span class="text-sm w-[30%] text-gray-500 font-medium">Amount</span>
-        <span class="text-sm w-[70%] text-gray-800 text-right">₹ {{ element.amount }}</span>
+      <div
+        class="flex border-2 border-indigo-300 dark:border-indigo-600 border-dotted p-2 rounded-md justify-between items-center">
+        <span class="text-sm w-[30%] text-gray-500 dark:text-gray-300 font-medium">Amount</span>
+        <span class="text-sm w-[70%] text-gray-800 dark:text-white text-right">₹ {{ element.amount }}</span>
       </div>
 
       <!-- Row: Date -->
-      <div class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
-        <span class="text-sm w-[30%] text-gray-500 font-medium">Date</span>
-        <span class="text-sm w-[70%] text-gray-800 text-right">{{ element.createdAt | date:'shortDate' }}</span>
+      <div
+        class="flex border-2 border-indigo-300 dark:border-indigo-600 border-dotted p-2 rounded-md justify-between items-center">
+        <span class="text-sm w-[30%] text-gray-500 dark:text-gray-300 font-medium">Date</span>
+        <span class="text-sm w-[70%] text-gray-800 dark:text-white text-right">{{ element.createdAt | date:'shortDate'
+          }}</span>
       </div>
 
       <!-- Row: Action -->
-      <div *ngIf="currentUserId === element.userId || userRole === 'Admin'" class="flex border-2 border-indigo-300 border-dotted p-2 rounded-md justify-between items-center">
-        <span class="text-sm w-[30%] text-gray-500 font-medium">Action</span>
+      <div *ngIf="currentUserId === element.userId || userRole === 'Admin'"
+        class="flex border-2 border-indigo-300 dark:border-indigo-600 border-dotted p-2 rounded-md justify-between items-center">
+        <span class="text-sm w-[30%] text-gray-500 dark:text-gray-300 font-medium">Action</span>
         <span class="text-sm w-[70%] text-right flex gap-2 justify-end">
           <button *ngIf="element.id" (click)="edit(element.id)" class="text-blue-600 hover:text-blue-800"
             aria-label="Edit">
@@ -111,25 +101,32 @@
 
   <!-- 🖥️ Desktop layout -->
   <div class="hidden md:block overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200 shadow rounded-lg border border-indigo-300 border-dotted">
-      <thead class="bg-indigo-100 text-indigo-700 text-sm font-semibold">
+    <table
+      class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 shadow rounded-lg border border-indigo-300 border-dotted dark:border-gray-600">
+      <thead class="bg-indigo-100 text-indigo-700 dark:bg-gray-800 dark:text-white text-sm font-semibold">
         <tr>
           <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">#</th>
           <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Name</th>
           <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Ingredient</th>
           <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Amount</th>
           <th class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Date</th>
-          <th *ngIf="showActionColumn || userRole === 'Admin'" class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Action</th>
+          <th *ngIf="showActionColumn || userRole === 'Admin'"
+            class="px-4 py-3 text-left border-b border-indigo-300 border-dotted">Action</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-indigo-300 text-sm text-gray-700">
-        <tr *ngFor="let element of ingredientList; let i = index" class="hover:bg-indigo-50 transition">
-          <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ i + 1 }}</td>
-          <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ element.userName }}</td>
-          <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ element.ingredientName }}</td>
-          <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ element.amount }}</td>
-          <td class="px-4 py-2 border-b border-indigo-200 border-dotted">{{ element.createdAt | date:'shortDate' }}</td>
-          <td *ngIf="currentUserId === element.userId || userRole === 'Admin'" class="px-4 py-2 border-b border-indigo-200 border-dotted">
+      <tbody class="divide-y divide-indigo-300 dark:divide-gray-700 text-sm text-gray-700 dark:text-white">
+        <tr *ngFor="let element of ingredientList; let i = index"
+          class="hover:bg-indigo-50 dark:hover:bg-gray-700 transition">
+          <td class="px-4 py-2 border-b border-indigo-200 border-dotted dark:border-gray-600">{{ i + 1 }}</td>
+          <td class="px-4 py-2 border-b border-indigo-200 border-dotted dark:border-gray-600">{{ element.userName }}
+          </td>
+          <td class="px-4 py-2 border-b border-indigo-200 border-dotted dark:border-gray-600">{{ element.ingredientName
+            }}</td>
+          <td class="px-4 py-2 border-b border-indigo-200 border-dotted dark:border-gray-600">{{ element.amount }}</td>
+          <td class="px-4 py-2 border-b border-indigo-200 border-dotted dark:border-gray-600">{{ element.createdAt |
+            date:'shortDate' }}</td>
+          <td *ngIf="currentUserId === element.userId || userRole === 'Admin'"
+            class="px-4 py-2 border-b border-indigo-200 border-dotted dark:border-gray-600">
             <div class="flex gap-3">
               <button *ngIf="element.id" (click)="edit(element.id)" class="text-blue-600 hover:text-blue-800"
                 aria-label="Edit">
