@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Ingredient } from '../../interface/interface';
+import { Ingredient, User } from '../../interface/interface';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
@@ -75,6 +75,7 @@ export class EmployeeListComponent {
   currentUserId: string | null = null;
   showActionColumn: boolean = false;
   userRole: string | null = null;
+  users: User[] = [];
 
   months = [
     { name: 'January', value: '01' },
@@ -108,6 +109,8 @@ export class EmployeeListComponent {
     this.initYearOptions();
     const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
     this.filters.selectedMonth = currentMonth; // 👈 set current month
+
+    this.loadUsers();
     this.loadIngredients();
   }
 
@@ -121,14 +124,19 @@ export class EmployeeListComponent {
 
       this.totalPages = Math.ceil(this.totalItems / this.pageSize);
       this.generatePageRange();
-
-      const namesSet = new Set<string>(
-        response.items.map((x: Ingredient) => x.userName).filter((name): name is string => !!name)
-      );
-      this.uniqueUserNames = Array.from(namesSet);
     });
   }
 
+
+  loadUsers(): void {
+    this.authService.getAllUsers().subscribe({
+      next: (data) => {
+        this.users = data;
+      },
+      error: () => {
+      }
+    });
+  }
 
 
   applyFilters() {
@@ -222,9 +230,12 @@ export class EmployeeListComponent {
     this.goToPage(this.totalPages);
   }
 
-  get userNameOptions() {
-    return this.uniqueUserNames.map(u => ({ label: u, value: u }));
-  }
+get userNameOptions() {
+  return this.users.map(user => ({
+    label: user.username,
+    value: user.username
+  }));
+}
 
   get monthOptions() {
     return this.months.map(m => ({ label: m.name, value: m.value }));
