@@ -15,7 +15,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 @Component({
   selector: 'app-ingredient-form-dialog',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule, MatSnackBarModule, MatDialogModule,MatDatepickerModule,MatNativeDateModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule, MatSnackBarModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule],
   templateUrl: './ingredient-form-dialog.html',
   styleUrl: './ingredient-form-dialog.scss'
 })
@@ -65,13 +65,19 @@ export class IngredientFormDialog {
     this.ingredientForm.patchValue({ userId });
 
     const rawValue = this.ingredientForm.getRawValue();
+    const rawDate = new Date(rawValue.date!);
+    rawDate.setMinutes(rawDate.getMinutes() - rawDate.getTimezoneOffset());
+
 
     const ingredient: Ingredient = {
       ingredientName: rawValue.ingredient ?? "",
       amount: parseFloat(rawValue.amount ?? ""),
       userId: rawValue.userId ?? "",
-      createdAt: rawValue.date ? new Date(rawValue.date) : undefined 
+      createdAt: new Date(rawDate)
     };
+
+    console.log(ingredient);
+
 
     const saveAction = this.isEdit
       ? this.httpService.updatedIngredient(this.ingredientId!, ingredient)
